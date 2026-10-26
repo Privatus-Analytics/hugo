@@ -1,0 +1,4 @@
+params:
+  privatusAnalytics:
+    siteId: pa_NOMOD1
+    modules: []

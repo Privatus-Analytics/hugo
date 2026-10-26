@@ -1,0 +1,3 @@
+[params.privatusAnalytics]
+  siteId = "pa_SERVER1"
+  enableOnServer = true

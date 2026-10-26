@@ -1,0 +1,35 @@
+{{- /*
+  A link that sends a Privatus Analytics custom event when it is clicked.
+
+  {{< privatus-link href="https://example.com/signup" event="Signup clicked" plan="pro" >}}Start free{{< /privatus-link >}}
+
+  href and event are needed. target, rel, class, id, title and click
+  (a click map name) are used on the link. Every other named parameter
+  becomes an event property: data-privatus-prop-<key>="value".
+*/ -}}
+{{- $reserved := slice "href" "event" "target" "rel" "class" "id" "title" "click" -}}
+{{- $href := .Get "href" | default "" -}}
+{{- $event := trim (string (.Get "event" | default "")) " " -}}
+{{- if gt (len $event) 120 }}{{ $event = substr $event 0 120 }}{{ end -}}
+{{- $props := slice -}}
+{{- if .IsNamedParams -}}
+  {{- range $k, $v := .Params -}}
+    {{- if not (in $reserved (lower $k)) -}}
+      {{- $key := replaceRE `[^a-z0-9_]` "_" (lower $k) -}}
+      {{- if gt (len $key) 64 }}{{ $key = substr $key 0 64 }}{{ end -}}
+      {{- $props = $props | append (dict "key" $key "value" (string $v)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if gt (len $props) 30 }}{{ $props = first 30 $props }}{{ end -}}
+<a href="{{ $href }}"
+  {{- with .Get "target" }} target="{{ . }}"{{ end }}
+  {{- with .Get "rel" }} rel="{{ . }}"{{ else }}{{ if eq (.Get "target") "_blank" }} rel="noopener"{{ end }}{{ end }}
+  {{- with .Get "class" }} class="{{ . }}"{{ end }}
+  {{- with .Get "id" }} id="{{ . }}"{{ end }}
+  {{- with .Get "title" }} title="{{ . }}"{{ end }}
+  {{- with $event }} data-privatus-event="{{ . }}"{{ end }}
+  {{- range $props }} data-privatus-prop-{{ .key | safeHTMLAttr }}="{{ .value }}"{{ end }}
+  {{- with .Get "click" }}{{ if findRE `^[A-Za-z0-9_.:-]{1,100}$` . }} data-privatus-click="{{ . }}"{{ end }}{{ end -}}
+>{{ .Inner | .Page.RenderString }}</a>
+{{- /* no trailing newline */ -}}

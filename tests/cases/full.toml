@@ -1,0 +1,13 @@
+[params.privatusAnalytics]
+  siteId = " pa_FULL99 "
+  modules = "engage,vitals"
+  domains = ["example.org", "www.example.org"]
+  exclude = []
+  mask = "/users/*->/users/:id"
+  spa = "history"
+  manual = true
+  [params.privatusAnalytics.attributes]
+    data-debug = "true"
+    data-Allow-Local = "true"
+    onclick = "alert(1)"
+    data-props = 'x" onload="alert(1)'

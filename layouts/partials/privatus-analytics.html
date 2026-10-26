@@ -1,0 +1,41 @@
+{{- /*
+  Privatus Analytics tracking script.
+  Put {{ partial "privatus-analytics.html" . }} in the <head> of your base layout.
+  Settings come from params.privatusAnalytics in your site config.
+  It prints nothing without a valid site id, and nothing on `hugo server`
+  unless enableOnServer is true.
+  Hugo makes config keys lowercase, so they are read in lowercase here.
+*/ -}}
+{{- $cfg := index site.Params "privatusanalytics" | default dict -}}
+{{- $siteId := trim (string (index $cfg "siteid" | default "")) " " -}}
+{{- $onServer := index $cfg "enableonserver" | default false -}}
+{{- if and (findRE `^pa_[A-Za-z0-9]{1,64}$` $siteId) (or (not hugo.IsServer) $onServer) -}}
+  {{- $attrs := dict "data-site" $siteId -}}
+  {{- range $key, $attr := dict "modules" "data-modules" "domains" "data-domains" "exclude" "data-exclude" "mask" "data-mask" "spa" "data-spa" -}}
+    {{- if isset $cfg $key -}}
+      {{- $value := index $cfg $key -}}
+      {{- if reflect.IsSlice $value -}}
+        {{- $value = delimit $value "," -}}
+      {{- end -}}
+      {{- $value = trim (string $value) " " -}}
+      {{- if or $value (eq $key "modules") -}}
+        {{- $attrs = merge $attrs (dict $attr $value) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if index $cfg "manual" -}}
+    {{- $attrs = merge $attrs (dict "data-manual" "true") -}}
+  {{- end -}}
+  {{- range $name, $value := index $cfg "attributes" -}}
+    {{- $name = lower $name -}}
+    {{- if and (findRE `^data-[a-z0-9-]+$` $name) (ne $name "data-site") -}}
+      {{- $attrs = merge $attrs (dict $name (string $value)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $html := printf `<script defer src="https://privatusstats.com/js/pa.js" data-site="%s"` $siteId -}}
+  {{- range $name, $value := $attrs -}}
+    {{- if eq $name "data-site" }}{{ continue }}{{ end -}}
+    {{- $html = printf `%s %s="%s"` $html $name (htmlEscape $value) -}}
+  {{- end -}}
+  {{- printf "%s></script>" $html | safeHTML -}}
+{{- end -}}
