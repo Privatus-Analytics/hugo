@@ -1,40 +1,29 @@
 # Privatus Analytics for Hugo
 
-**See how many people visit your Hugo site, which pages they read and where
-they came from. No cookies, honest numbers, and a dashboard you understand in
-seconds.**
+**Real visitor numbers for your Hugo site. No cookies, no cookie pop-up, no bots.**
 
-## The problem
+You want to know if people visit your Hugo site. But Google Analytics uses
+cookies, so in many countries you must show a cookie pop-up first (the box that
+asks visitors to say yes to cookies). Many people click no, so they never show
+up in your numbers. Bots add fake visits on top.
 
-You built a site with Hugo and want to know if anyone reads it. Most
-analytics tools make that hard. Google Analytics is slow, confusing and sends
-what your visitors do to Google. In many countries it also means showing a
-cookie pop-up (the box that asks visitors to accept cookies). Many people
-click "reject", so you never see them. Bots fill up the numbers that are left.
+This Hugo module adds the Privatus Analytics script to your pages from one line
+in your config. Your own visits while you write with `hugo server` are not
+counted. The script sets no cookies and keeps no IP addresses. Bots are filtered
+out before they are counted.
 
-## The solution
+So you see how many real people came, which pages they looked at and where they
+came from, on one simple dashboard. A report comes to your inbox each week, and
+you can set alerts for when traffic jumps or drops. And you don't need a cookie
+pop-up for your analytics.
 
-Privatus Analytics counts visits without cookies and never stores IP
-addresses. Bots are filtered out before they are counted. This Hugo module
-adds the small Privatus Analytics script to your pages from one line in your
-config. Your own visits while you write with `hugo server` are not counted.
+**Free plan, no card:** 10,000 events a month (an event is a page view or an action you track) on up to 3 sites. [Start free at privatusanalytics.com](https://privatusanalytics.com).
 
-## What you get
-
-- **A dashboard you understand in seconds.** Visitors, top pages and where
-  people came from, all on one screen.
-- **No cookie pop-up needed for our analytics.** We set no cookies and store
-  no personal data. Laws differ by country, so check your own legal advice.
-- **Honest numbers.** Known bots and fake traffic are left out on every plan.
-- **A fast site.** The tracking script is about 3 KB and loads after your page.
-- **Clicks you care about.** A shortcode turns any link into a tracked event,
-  like "Signup clicked".
-- **Data you own.** We never sell it or show you ads, and you can pull it out
-  any time through the API.
-
-**Start free.** The Free plan has 10,000 events a month and 3 sites, with no
-card. Every new account also gets 14 days of Pro free, with no card.
-[Create your account](https://privatusanalytics.com).
+- **No cookies.** No cookies and no hidden IDs on your visitors' devices, and no IP
+  addresses are kept. Laws differ by country, so check your own legal advice.
+- **Real people, not bots.** Known bots, data centers and spam visits are left
+  out on every plan.
+- **Small and fast.** The script is about 3 KB when compressed.
 
 ## Requirements
 
